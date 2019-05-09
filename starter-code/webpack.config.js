@@ -2,6 +2,9 @@ const path = require("path");
 const webpack = require("webpack");
 const bundlePath = path.resolve(__dirname, "dist/");
 
+
+const PUBLIC_URL = './public/';
+
 module.exports = {
   entry: "./src/index.js",
   module: {
@@ -12,7 +15,13 @@ module.exports = {
         loader: 'babel-loader',
       },
       {
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+        exclude: /node_modules/,
+        use: ['file-loader?name=[name].[ext]'] // ?name=[name].[ext] is only necessary to preserve the original file name
+      },
+      {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: [ 'style-loader', 'css-loader' ]
       }
     ]
@@ -20,6 +29,7 @@ module.exports = {
   resolve: { extensions: ['*', '.js', '.jsx'] },
   output: {
     publicPath: bundlePath,
+    
     filename: "bundle.js"
   },
   devServer: {
@@ -32,5 +42,7 @@ module.exports = {
   mode: "development",
   performance: {
     hints: false
-  },
+  }
 };
+
+
